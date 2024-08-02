@@ -8,14 +8,14 @@ set(CMAKE_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/src/headers)
 file(GLOB_RECURSE SRCS src/*.c)
 set(CMAKE_BUILD_TYPE Debug)
 # # Find GTK4 package using pkg-config
-# find_package(PkgConfig REQUIRED)
-# pkg_check_modules(GTK4 REQUIRED gtk4)
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(GTK4 REQUIRED gtk4)
 
 # Include GTK3 directories
-include_directories(${GTK4_INCLUDE_DIRS} src/ src/headers/)
+include_directories(${GTK4_INCLUDE_DIRS} src/ src/headers/ src/utils)
 add_definitions(${GTK4_CFLAGS_OTHER})
 
-link_directories(src/headers/)
+link_directories(src/headers/ src/utils src/)
 
 # Add the main executable
 add_executable(${PROJECT_NAME} ${SRCS})
@@ -23,4 +23,4 @@ add_executable(${PROJECT_NAME} ${SRCS})
 
 # Link GTK4 libraries
 target_link_libraries(fautosort ${GTK4_LIBRARIES})
-target_include_directories(fautosort PRIVATE ${PROJECT_SOURCE_DIR}/src/headers/)
+target_include_directories(fautosort PRIVATE ${PROJECT_SOURCE_DIR}/src/headers/ ${PROJECT_SOURCE_DIR}/src/utils/)
