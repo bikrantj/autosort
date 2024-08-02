@@ -1,10 +1,13 @@
+#include "headers.h"
 #include <gtk/gtk.h>
 
 static void file_dialog_response(GtkNativeDialog *dialog, int response,
                                  gpointer user_data) {
   if (response == GTK_RESPONSE_ACCEPT) {
     g_autoptr(GFile) file = gtk_file_chooser_get_file(GTK_FILE_CHOOSER(dialog));
+    gchar *selected_file_path = g_file_get_path(file);
     g_print("File selected: %s\n", g_file_get_path(file));
+    onDirectorySelect(selected_file_path);
   }
   gtk_native_dialog_destroy(dialog);
 }
