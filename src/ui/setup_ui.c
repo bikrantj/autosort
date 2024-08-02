@@ -5,14 +5,19 @@ void setup_ui(GtkApplication *app, gpointer user_data) {
   gtk_window_set_default_size(GTK_WINDOW(window), 400, 400);
 
   // Create a box for file chooser:
-  GtkWidget *box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+  GtkWidget *grid = gtk_grid_new();
+  gtk_widget_set_halign(grid, GTK_ALIGN_CENTER);
+  // gtk_grid_set_row_homogeneous(GTK_GRID(grid), TRUE);
+  // gtk_grid_set_column_homogeneous(GTK_GRID(grid), TRUE);
   GtkWidget *file_chooser = create_file_chooser();
+  gtk_grid_attach(GTK_GRID(grid), file_chooser, 0, 0, 1, 1);
 
   // Append file chooser inside the box
-  gtk_box_append(GTK_BOX(box), file_chooser);
 
   // Append box inside window
-  gtk_window_set_child(GTK_WINDOW(window), box);
+  gtk_window_set_child(GTK_WINDOW(window), grid);
 
+  // Load css
+  apply_css("../styles.css");
   gtk_widget_show(window);
 }

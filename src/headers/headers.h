@@ -5,7 +5,7 @@
 // ========== UI_HEADERS ==========
 void setup_ui(GtkApplication *app, gpointer user_data);
 GtkWidget *create_file_chooser();
-
+void apply_css(const char *css_file_path);
 // ========== UTILS_HEADERS ==========
 // Function to create a directory if it doesn't exist
 void createDirectory(const char *path);
