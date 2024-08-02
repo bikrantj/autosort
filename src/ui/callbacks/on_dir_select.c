@@ -1,2 +1,4 @@
 #include "headers.h"
-void onDirectorySelect(const char *dirPath) { processDirectory(dirPath); }
+void onDirectorySelect(const char *dirPath) {
+  processDirectory(dirPath, dirPath);
+}

@@ -1,0 +1,3 @@
+images = .jpg .png .webp
+documents = .docx .pdf .pptx .txt
+sounds = .mp3 .mp4 .wav

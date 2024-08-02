@@ -1,7 +1,5 @@
-#include "headers.h"
 #include "typedef.h"
 #include <dirent.h>
-#include <gtk/gtk.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -11,7 +9,7 @@
 FileType fileTypes[] = {
     {"jpg", "images"},     {"png", "images"},    {"jpeg", "images"},
     {"docx", "documents"}, {"pdf", "documents"}, {"txt", "documents"},
-    {NULL, NULL} // Sentinel to mark end of array
+    {"c", "code"},         {NULL, NULL} // Sentinel to mark end of array
 };
 // Function to create a directory if it doesn't exist
 void createDirectory(const char *path) {
@@ -38,7 +36,7 @@ void moveFile(const char *filePath, const char *destFolder) {
 }
 
 // Recursive function to process directories
-void processDirectory(const char *dirPath) {
+void processDirectory(const char *dirPath, const char *rootPath) {
   DIR *dir;
   struct dirent *entry;
 
@@ -52,7 +50,7 @@ void processDirectory(const char *dirPath) {
         continue;
 
       snprintf(path, sizeof(path), "%s/%s", dirPath, entry->d_name);
-      processDirectory(path);
+      processDirectory(path, rootPath);
     } else {
       snprintf(path, sizeof(path), "%s/%s", dirPath, entry->d_name);
       const char *ext = getFileExtension(entry->d_name);
@@ -62,7 +60,7 @@ void processDirectory(const char *dirPath) {
       for (int i = 0; fileTypes[i].extension != NULL; i++) {
         if (strcmp(ext, fileTypes[i].extension) == 0) {
           char destFolder[1024];
-          snprintf(destFolder, sizeof(destFolder), "%s/%s", dirPath,
+          snprintf(destFolder, sizeof(destFolder), "%s/%s", rootPath,
                    fileTypes[i].folder);
           createDirectory(destFolder);
           moveFile(path, destFolder);
@@ -74,7 +72,7 @@ void processDirectory(const char *dirPath) {
       // If no matching folder is found, create a folder with the extension name
       if (!found) {
         char destFolder[1024];
-        snprintf(destFolder, sizeof(destFolder), "%s/%s", dirPath, ext);
+        snprintf(destFolder, sizeof(destFolder), "%s/%s", rootPath, ext);
         createDirectory(destFolder);
         moveFile(path, destFolder);
       }
